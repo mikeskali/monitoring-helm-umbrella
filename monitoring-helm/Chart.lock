@@ -1,0 +1,15 @@
+dependencies:
+- name: prometheus-operator
+  repository: https://kubernetes-charts.storage.googleapis.com/
+  version: 8.13.2
+- name: loki-stack
+  repository: https://grafana.github.io/loki/charts
+  version: 0.36.1
+- name: local-telegraf
+  repository: file://../local-helm-charts/local-telegraf
+  version: 0.1.0
+- name: local-node-exporter
+  repository: file://../local-helm-charts/local-node-exporter
+  version: 0.1.0
+digest: sha256:ed2dc694e50cf08772579f4ff7655a3ac0151435687c4deda867ad89e0738c31
+generated: "2020-04-27T14:25:46.995035+03:00"

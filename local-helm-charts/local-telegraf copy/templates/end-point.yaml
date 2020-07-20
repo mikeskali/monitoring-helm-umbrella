@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: local-telegraf
+  labels:
+    k8s-app: local-telegraf
+subsets:
+- addresses:
+  - ip: host.docker.internal
+  ports:
+  - port: 9273
+    protocol: TCP
+    name: metrics

@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+    name: local-node-exporter
+    labels:
+        k8s-app: local-node-exporter
+        release: {{ .Release.Name }}
+spec:
+    selector:
+        matchLabels:
+            k8s-app: local-node-exporter            
+    namespaceSelector:
+        matchNames:
+        - {{ .Release.Namespace }}
+    endpoints:
+    - port: metrics
+      interval: 10s
+      honorLabels: true

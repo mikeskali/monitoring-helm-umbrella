@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+    name: local-telegraf
+    labels:
+        k8s-app: local-telegraf
+        release: {{ .Release.Name }}
+spec:
+    type: ExternalName
+    externalName: host.docker.internal
+    ports:
+    - name: metrics
+      port: 9273
+      protocol: TCP
+      targetPort: 9273

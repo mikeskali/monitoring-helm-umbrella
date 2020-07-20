@@ -1,0 +1,19 @@
+{{- $files := .Files.Glob "grafana-dashboards/*.json" }}
+{{- if $files }}
+apiVersion: v1
+kind: ConfigMapList
+items:
+{{- range $path, $fileContents := $files }}
+{{- $dashboardName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${2}" }}
+- apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    name: {{ printf "%s-%s" "grafana-dashboard" $dashboardName | trunc 63 | trimSuffix "-" }}
+    namespace: {{ $.Release.Namespace }}
+    labels:      
+      grafana_dashboard: "1"
+      app: helm-monitoring-grafana-dashboards
+  data:
+    {{ $dashboardName }}.json: {{ $.Files.Get $path | toJson }}
+{{- end }}
+{{- end }}

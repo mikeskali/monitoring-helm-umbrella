@@ -1,0 +1,52 @@
+# Default values for monitoring-helm.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+locki-stack:
+  fluent-bit.enabled: false
+  promtail.enabled: true
+  grafana.enabled: false
+  prometheus.enabled: false
+  prometheus.alertmanager.persistentVolume.enabled: false
+  prometheus.server.persistentVolume.enabled: false
+
+prometheus-operator:
+  prometheus:
+    prometheusSpec:  
+      prometheus-node-exporter:
+        podLabels:
+          ## Add the 'node-exporter' label to be used by serviceMonitor to match standard common usage in rules and grafana dashboards
+          ##
+          jobLabel: node-exporter
+        extraArgs:
+          - --collector.filesystem.ignored-mount-points=^/(dev|proc|sys|var/lib/docker/.+)($|/)
+          - --collector.filesystem.ignored-fs-types=^(autofs|binfmt_misc|cgroup|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|mqueue|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|sysfs|tracefs)$
+
+  kubeControllerManager:
+      service:
+          selector:
+          k8s-app: null
+          component: kube-controller-manager
+
+  kubeEtcd:
+      service:
+          selector:
+          k8s-app: null
+          component: etcd
+
+  kubeScheduler:
+      service:
+          selector:
+          k8s-app: null
+          component: kube-scheduler
+
+  alertmanager:
+      config:
+          global:
+              resolve_timeout: 5m
+          route:
+              group_by: ['job']
+              group_wait: 30s
+              group_interval: 5m
+              repeat_interval: 12h
+    

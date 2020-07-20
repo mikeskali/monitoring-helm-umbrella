@@ -1,0 +1,29 @@
+apiVersion: v2
+name: monitoring-helm
+description: A Helm chart for Kubernetes
+
+dependencies:
+    - name: prometheus-operator
+      version: "8.13.2"
+      repository: https://kubernetes-charts.storage.googleapis.com/
+      enabled: true
+    - name: loki-stack
+      version: "0.36.1"
+      repository: https://grafana.github.io/loki/charts
+      condition: prometheus-operator.enabled
+      enabled: true
+    - name: local-telegraf
+      version: "0.1.0"
+      repository: file://../local-helm-charts/local-telegraf
+      enabled: true
+    - name: local-node-exporter
+      version: "0.1.0"
+      repository: file://../local-helm-charts/local-node-exporter
+      enabled: true
+
+type: application
+version: 0.1.0
+appVersion: 1.16.0
+
+maintainers:
+    - name: Michael Sklyar

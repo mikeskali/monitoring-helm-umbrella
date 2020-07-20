@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+    name: local-node-exporter    
+    labels:
+        k8s-app: local-node-exporter
+spec:
+    type: ExternalName
+    externalName: local.node.exporter
+    ports:
+    - name: metrics
+      port: 9100
+      protocol: TCP
+      targetPort: 9100

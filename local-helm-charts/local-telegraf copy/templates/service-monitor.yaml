@@ -1,0 +1,17 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+    name: local-telegraf
+    labels:
+        k8s-app: local-telegraf        
+spec:
+    selector:
+        matchLabels:
+            k8s-app: local-telegraf
+    namespaceSelector:
+        matchNames:
+        - {{ .Release.Namespace }}
+    endpoints:
+    - port: metrics
+      interval: 10s
+      honorLabels: true
